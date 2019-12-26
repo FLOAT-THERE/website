@@ -26,7 +26,7 @@ GetCustomerBoxes.onreadystatechange=(e)=>{
         // console.log(myArr.items);
         for(entry of data.items) {
             // console.log(item)
-            var item1 = entry["item1"]
+            var item1 = entry["items"]
             var item2 = entry["item2"]
             var item3 = entry["item3"]
             var item4 = entry["item4"]
