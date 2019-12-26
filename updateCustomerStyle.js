@@ -1,18 +1,21 @@
+// URL looks like:
+ // https://www.mysite.com/_functions/myFunction/John/Doe
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const GetCustomerBoxes = new XMLHttpRequest();
-const customerBoxesUrl = 'https://www.floatthere.com/_functions/customerboxes'
+var lastOrderNum = 10071
+const customerBoxesUrl = 'https://www.floatthere.com/_functions/customerBoxOrder/' + lastOrderNum.toString(10);
 GetCustomerBoxes.open("GET", customerBoxesUrl);
 GetCustomerBoxes.responseType = 'json';
 ​
 GetCustomerBoxes.send();
-​
+​/*
 const GetStyles = new XMLHttpRequest();
 const getStylesUrl = 'https://www.floatthere.com/_functions/styles'
 GetStyles.open("GET", getStylesUrl);
 GetStyles.responseType = 'json';
 ​
 GetStyles.send();
-​
+​*/
 var itemsArray = [];
 ​
 GetCustomerBoxes.onreadystatechange=(e)=>{
@@ -44,7 +47,7 @@ GetCustomerBoxes.onreadystatechange=(e)=>{
         console.log("error");
     }
 }
-​
+​/*
 GetStyles.onreadystatechange=(e)=>{
     if (GetStyles.readyState == 4 && GetStyles.status == 200) {
         var data = JSON.parse(GetStyles.responseText);
@@ -65,3 +68,4 @@ GetStyles.onreadystatechange=(e)=>{
         }
     }
 }
+*/
