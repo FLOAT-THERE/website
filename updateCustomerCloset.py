@@ -94,7 +94,7 @@ def updateCustomerCloset(customers):
                     print('Other error occurred')
                 else:
                     print('Success, updated customer style')
-                return None
+            return None
 
 def main():
     # print command line arguments
