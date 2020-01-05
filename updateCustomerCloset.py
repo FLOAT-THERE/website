@@ -108,7 +108,7 @@ def main():
         if (len(sys.argv) > 2):
             lastDate = sys.argv[2]
         else:
-            lastDate = datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
+            lastDate = datetime.strftime(datetime.now() - timedelta(3), '%Y-%m-%d')
         customersOrdered = getCustomerBoxOrderByDate(lastDate)
         updateCustomerCloset(customersOrdered)
 
