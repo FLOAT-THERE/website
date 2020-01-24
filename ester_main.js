@@ -1,38 +1,58 @@
-var orderNum = 10076;
+var orderNum = 10072;
 
-getCustomerBoxOrder(orderNum, function(err, customerId) {
+getCustomerBoxOrders(orderNum, function(err, customerInfoDict) {
   if (err) throw new Error(err);
-  console.log("Customer Id: " + customerId);
-  
-  getStylesOfUser(customerId, function(err, stylesList) {
-    if (err) throw new Error(err);
-    console.log("List of style ids: ")
-    console.log(stylesList);
+  console.log("Customer Info Dict: ");
+  console.log(customerInfoDict);
 
-    for (style of stylesList) {
-      getStyleFromStylesCopy(style, function(err, itemDict) {
-        if (err) throw new Error(err);
-        console.log("item: " + itemDict["title"]);
-
-        //send put request
-        sendPutRequest(itemDict, customerId, function(err, success) {
-          if (err) throw new Error(err);
-          if (success) {
-            console.log("updated in table");
-          }
-        });
-
-      });
-
-    }
-
-
-  });
+  get_styles(customerInfoDict, 0);
 });
 
+function get_styles(customerInfoDict, customerIndex) {
+  var customerId = Object.keys(customerInfoDict)[customerIndex];
+  
+  if (customerIndex < Object.keys(customerInfoDict).length) {
+    getStylesOfUser(customerId, function(err, stylesList) {
+      if (err) throw new Error(err);
+      console.log("Style IDs List: ");
+      console.log(stylesList);
 
-function getCustomerBoxOrder(order, callback) {
-  console.log("Get customer box order " + order);
+      handle_styles(stylesList, customerInfoDict, customerIndex, 0, function(err, success) {
+        if (err) throw new Error(err);
+
+      }) 
+
+    })
+  }
+}
+
+function handle_styles(stylesList, customerInfoDict, customerIndex, styleIndex, callback) {
+  var customerId = Object.keys(customerInfoDict)[customerIndex];
+  var lastDateRented = customerInfoDict[customerId];
+  if (styleIndex < stylesList.length) {
+    getStyleFromStylesCopy(stylesList[styleIndex], function(err, itemDict) {
+      if (err) throw new Error(err);
+          console.log("item: " + itemDict["title"]);
+  
+          //send put request
+          sendPutRequest(itemDict, customerId, lastDateRented, function(err, success) {
+            if (err) throw new Error(err);
+            if (success) {
+              console.log("updated in table");
+            }
+            handle_styles(stylesList, customerInfoDict, customerIndex, styleIndex+1, callback);
+            return callback(null, true);
+          });
+    })
+  } else {
+        customerIndex+=1;
+        get_styles(customerInfoDict, customerIndex);
+  }
+}
+
+// return a dict of customerId : lastDateRented
+function getCustomerBoxOrders(order, callback) {
+  console.log("Retrieving customer box orders after order #" + order);
 
   var request = require("request-promise");
   var options = { method: 'GET',
@@ -45,12 +65,20 @@ function getCustomerBoxOrder(order, callback) {
     var data = JSON.parse(body);
     
     var itemDict = data["items"];
-    var customerId = itemDict[0]["customerId"];
-    //console.log(customerId);
-    return callback(null, customerId);
+    var numOrders = Object.keys(itemDict).length;
+    var customerInfoDict = {};
+
+    // populate customerInfoDict
+    for (var i = 0; i < numOrders; i++) {
+      var customerId = itemDict[i]["customerId"];
+      var lastDateRented = itemDict[i]["_createdDate"];
+      customerInfoDict[customerId] = lastDateRented;
+    }
+    
+    return callback(null, customerInfoDict);
   });
 }
-
+ 
 function getStylesOfUser(customerId, callback) {
   console.log("Get styles of user " + customerId);
 
@@ -69,7 +97,7 @@ function getStylesOfUser(customerId, callback) {
     for (styleDict of styles) {
       stylesList.push(styleDict["_id"]);
     }
-    
+
     return callback(null, stylesList);
   });
 }
@@ -92,9 +120,9 @@ function getStyleFromStylesCopy(style, callback) {
   });
 }
 
-function sendPutRequest(itemDict, customerId, callback) {
+function sendPutRequest(itemDict, customerId, lastDateRented, callback) {
 
-    var bodyString  = generatePutString(itemDict, true, customerId);
+    var bodyString  = generatePutString(itemDict, customerId, lastDateRented);
 
     var request = require("request-promise");
   
@@ -115,7 +143,7 @@ function sendPutRequest(itemDict, customerId, callback) {
 
 
 
-function generatePutString(itemDict, incrementNumRentals, customerId){
+function generatePutString(itemDict, customerId, lastDateRented){
   console.log("generating put string");
   var output = '{';
 
@@ -126,23 +154,18 @@ function generatePutString(itemDict, incrementNumRentals, customerId){
       iteminfo = '\n\t"' + key + '": ""';
     } else {
 
-      if (!incrementNumRentals) {
-        if (key == 'numberOfRentals') {
-          iteminfo = '\n\t"' + key + '": "' + '0' + '"';  
-        } else {
-          iteminfo = '\n\t"' + key + '": "' + itemDict[key] + '"';
-        }
+      if (key == 'numberOfRentals') {
+        var incrementedNum = parseInt(itemDict[key], 10) + 1;
+        incrementedNum = incrementedNum.toString(10);
+        iteminfo = '\n\t"' + key + '": "' + incrementedNum + '"';  
+      } else if (key == 'inUseCustomer') {
+        iteminfo = '\n\t"' + key + '": "' + customerId + '"';
+      } else if (key == 'lastDateRented') {
+        iteminfo = '\n\t"' + key + '": "' + lastDateRented + '"';
       } else {
-        if (key == 'numberOfRentals') {
-          var incrementedNum = parseInt(itemDict[key], 10) + 1;
-          incrementedNum = incrementedNum.toString(10);
-          iteminfo = '\n\t"' + key + '": "' + incrementedNum + '"';  
-        } else if (key == 'inUseCustomer') {
-          iteminfo = '\n\t"' + key + '": "' + customerId + '"';
-        } else {
-          iteminfo = '\n\t"' + key + '": "' + itemDict[key] + '"';
-        }
+        iteminfo = '\n\t"' + key + '": "' + itemDict[key] + '"';
       }
+
 
     }
 
@@ -160,8 +183,6 @@ function generatePutString(itemDict, incrementNumRentals, customerId){
   return output;
 
 }
-
-
 
 // function initialize() {
 //   console.log("Initializing");
