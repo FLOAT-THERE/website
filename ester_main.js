@@ -174,14 +174,16 @@ function sendPutRequest(itemDict, customerId, lastDateRented, callback) {
 function generatePutString(itemDict, customerId, lastDateRented){
   console.log("");
   console.log("Generating string for PUT request");
+  
   var output = '{';
+  var numKeys = Object.keys(itemDict).length; //number of keys in current itemDict
 
-  var numKeys = Object.keys(itemDict).length;
-
+  //iterate through every key in dictionary and add correctly formatted line to output string
   Object.keys(itemDict).forEach(function(key) {
+      var value = itemDict[key].toString().replace(/[\n\r]/g, ''); //removes any newline characters from dictonary value
       if (key == 'numberOfRentals') {
-        var incrementedNum = parseInt(itemDict[key], 10) + 1;
-        incrementedNum = incrementedNum.toString(10);
+        var incrementedNum = parseInt(value, 10) + 1; //takes current numberOfRentals string, converts to int, and increments by 1
+        incrementedNum = incrementedNum.toString(10); //convert int back to string
         iteminfo = '\n\t"' + key + '": "' + incrementedNum + '"';  
         console.log("Number of Rentals: " + incrementedNum);
       } else if (key == 'lastCustomerRented') {
@@ -191,20 +193,18 @@ function generatePutString(itemDict, customerId, lastDateRented){
         iteminfo = '\n\t"' + key + '": "' + lastDateRented + '"';
         console.log("Last Date Rented: " + lastDateRented);
       } else {
-        iteminfo = '\n\t"' + key + '": "' + itemDict[key] + '"';
+        iteminfo = '\n\t"' + key + '": "' + value + '"';
       }
 
     if (numKeys != 1) {
-      iteminfo += ',';
+      iteminfo += ','; //add a comma after every line except last one
     }
 
     output += iteminfo;
-
     numKeys-=1;
   })  
 
   output += '}';
-  //console.log(output);
+ // console.log(output);
   return output;
-
 }
