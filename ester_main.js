@@ -1,127 +1,155 @@
-//initialize();
-getRequestCustomerBoxes();
+// to run, type node [file-name] [orderNum] into command line
+// i.e. node ester_main.js 10078
 
-function initialize() {
-  console.log("Initializing");
+if (process.argv.length <= 2) {   //checks if an orderNum was entered into command line; if not throw an error
+  throw new Error("Invalid orderNum. Please enter into console: node [file-name] [orderNum]");
+}
+var orderNum = process.argv.slice(2); //retrieves the orderNum from command line argument
+main(orderNum);
+
+function main(orderNum) {
+  //Retrieve all customer boxes with order placed after orderNum and returns a dictionary with format {customerEmail: lastDateRented}
+  getCustomerBoxOrders(orderNum, function(err, customerInfoDict) {
+    if (err) throw new Error(err);
+    console.log("Customer Info Dictionary: ");
+    console.log(customerInfoDict);
+
+    retrieve_customer_styles(customerInfoDict, 0);
+  });
+}
+
+// Gets style IDs of the customer corresponding to customerInfoDict[customerindex]
+function retrieve_customer_styles(customerInfoDict, customerIndex) {
+  var customerId = Object.keys(customerInfoDict)[customerIndex]; //grabs the customer email at customerIndex
+  
+  if (customerIndex < Object.keys(customerInfoDict).length) {
+    //make GET request to get style IDs for customerId
+    getStylesOfUser(customerId, function(err, stylesList) {
+      if (err) throw new Error(err);
+      console.log("Style IDs List: ");
+      console.log(stylesList);
+
+      handle_styles(stylesList, customerInfoDict, customerIndex, 0, function(err, success) {
+        if (err) throw new Error(err);
+
+      }) 
+
+    })
+  }
+}
+
+// Takes in a list of styleIds (stylesList), a dictionary of {customerEmail: lastDateRented} key-value pairs (customerInfoDict),
+// an index to keep track of which customer in customerInfoDict we are looking at (customerIndex), and which style id in stylesList
+// we are looking at (styleIndex). The callback parameter is included to ensure all code within handle_styles is executed before other
+// code outside the function is executed 
+function handle_styles(stylesList, customerInfoDict, customerIndex, styleIndex, callback) {
+  var customerId = Object.keys(customerInfoDict)[customerIndex];
+  var lastDateRented = customerInfoDict[customerId];
+  if (styleIndex < stylesList.length) {
+    //Make a GET request to retrieve information about the style ID at stylesList[styleIndex] and return it as a dictionaty called itemDict
+    getStyleFromStylesCopy(stylesList[styleIndex], function(err, itemDict) {
+      if (err) throw new Error(err);
+          console.log("item: " + itemDict["title"]);
+  
+          //send PUT request to update information related to current style ID
+          sendPutRequest(itemDict, customerId, lastDateRented, function(err, success) {
+            if (err) throw new Error(err);
+            if (success) {
+              console.log("Successfully updated");
+              console.log("");
+            }
+            //call the handle_styles function again on the next style ID (styleIndex+1) in stylesList
+            handle_styles(stylesList, customerInfoDict, customerIndex, styleIndex+1, callback);
+            return callback(null, true);
+          });
+    })
+  } else {
+        // If all styles in the current stylesList are handled, we can increment customerIndex to move on to the next customer in customerInfoDict
+        customerIndex+=1;
+        retrieve_customer_styles(customerInfoDict, customerIndex);
+  }
+}
+
+// make GET request to customerBoxOrder function and return a dictionary of format {customerId:lastDateRented} on all customerIds with orders after orderNum
+// The callback parameter is included to ensure all code within getCustomerBoxOrders is executed before other code outside the function is executed 
+function getCustomerBoxOrders(orderNum, callback) {
+  console.log("Retrieving customer box orders after order #" + orderNum);
 
   var request = require("request-promise");
   var options = { method: 'GET',
-    url: 'https://www.floatthere.com/_functions/stylescopy',
+    url: 'https://www.floatthere.com/_functions/customerBoxOrder/' + orderNum,
   };
 
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
     
     var data = JSON.parse(body);
-    var numItems = 0;
-    //console.log(data);
-    for (itemDict of data.items) {
-      numItems += 1;
+    
+    var itemDict = data["items"];
+    var numOrders = Object.keys(itemDict).length;
+    var customerInfoDict = {};
+
+    // populate customerInfoDict
+    for (var i = 0; i < numOrders; i++) {
+      var customerId = itemDict[i]["customerId"];
+      var lastDateRented = itemDict[i]["_updatedDate"];
+      customerInfoDict[customerId] = lastDateRented;
     }
-    console.log("numItems: " + numItems);
-  
-    initialPutRequest(data.items, numItems);
+    
+    return callback(null, customerInfoDict);
   });
 }
+ 
+// make GET request to stylesOfUser function and return a list of style IDs associated with customerId
+// The callback parameter is included to ensure all code within getStylesOfUser is executed before other code outside the function is executed 
+function getStylesOfUser(customerId, callback) {
+  console.log("Get styles of user " + customerId);
 
-var callsMade = 0
-function initialPutRequest(items, count) {
-
-  if (callsMade >= 1) {
-    console.log("Initial Put Request Done");
-    getRequestCustomerBoxes();
-  } else {
-    var itemDict = items[callsMade];
-    var bodyString  = generatePutString(itemDict, false);
-
-    var request = require("request-promise");
-  
-    var options = { 
-      method: 'PUT',
-      url: 'https://www.floatthere.com/_functions/stylescopy',
-      body: bodyString
-    };
-  
-    request(options, function (error, response, body) {
-      if (error) throw new Error(error);
-      callsMade += 1;
-      console.log(body);
-      initialPutRequest(items, count);
-      
-    });
-  }
-  
-}
-
-function getRequestCustomerBoxes() {
-  console.log("Get Customer Boxes");
   var request = require("request-promise");
-
   var options = { method: 'GET',
-    url: 'https://www.floatthere.com/_functions/customerboxes'
+    url: 'https://www.floatthere.com/_functions/stylesOfUser/' + customerId,
   };
 
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
-
+    
     var data = JSON.parse(body);
-    for (entry of data.items) {
-      var item1 = entry["items"]
-      var item2 = entry["item2"]
-      var item3 = entry["item3"]
-      var item4 = entry["item4"]
-      var item5 = entry["item5"]
-      var item6 = entry["item6"]
-      var item7 = entry["item7"]
-      var item8 = entry["item8"]
-      var item9 = entry["item9"]
-      var item10 = entry["item10"]
-      var item11 = entry["item11"]
-      var item12 = entry["item12"]
-
-      itemsArray = [item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12];
-
-      //remove items that are null
-      for(var i = itemsArray.length; i--;){
-        if (itemsArray[i] === '') {
-          itemsArray.splice(i, 1);
-        } 
-      }
-      console.log(itemsArray);
-
-      //for each item, find in styles table
-      for (var i = 0; i < itemsArray.length; i++) {
-        //console.log(itemsArray[i]);
-        //updateStyles(itemsArray[i]);
-      }
+    
+    var styles = data["items"];
+    var stylesList = [];
+    for (styleDict of styles) {
+      stylesList.push(styleDict["_id"]);
     }
+
+    return callback(null, stylesList);
   });
 }
 
-function updateStyles(style) {
+// make GET request to stylescopy function and return a dictionary with information related to styleId
+// The callback parameter is included to ensure all code within getStyleFromStylesCopy is executed before other code outside the function is executed 
+function getStyleFromStylesCopy(styleId, callback) {
   var request = require("request-promise");
-
+  console.log("updating " + styleId);
   var options = { 
     method: 'GET',
-    url: 'https://www.floatthere.com/_functions/stylescopy',
+    url: 'https://www.floatthere.com/_functions/stylescopy/' + styleId,
   };
   
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
     var data = JSON.parse(body);
-    for (itemDict of data.items) {
-      if (itemDict["title"] == style) {
-        sendPutRequest(itemDict);
-      }
-    }
-    //console.log(data);
+    var itemDict = data.items[0];
+
+    return callback(null, itemDict);
 
   });
 }
 
-function sendPutRequest(itemDict) {
+// makes a PUT request to update information on the style associated with itemDict
+// The callback parameter is included to ensure all code within sendPutRequest is executed before other code outside the function is executed
+function sendPutRequest(itemDict, customerId, lastDateRented, callback) {
 
-    var bodyString  = generatePutString(itemDict, true);
+    var bodyString  = generatePutString(itemDict, customerId, lastDateRented);
 
     var request = require("request-promise");
   
@@ -135,55 +163,48 @@ function sendPutRequest(itemDict) {
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
       console.log(body);
+      return callback(null, true);
     });
+
 }
 
-
-
-function generatePutString(itemDict, incrementNumRentals){
+// Generates a string of text to be used for making the PUT request. This string increments the current number of rentals and updates
+// the lastCustomerRented and lastDateRented fields 
+//** issue here where if column ids are null, they can not be populated through PUT request
+function generatePutString(itemDict, customerId, lastDateRented){
+  console.log("");
+  console.log("Generating string for PUT request");
+  
   var output = '{';
+  var numKeys = Object.keys(itemDict).length; //number of keys in current itemDict
 
-  var numKeys = Object.keys(itemDict).length;
-
+  //iterate through every key in dictionary and add correctly formatted line to output string
   Object.keys(itemDict).forEach(function(key) {
-    if (itemDict[key] == 'null') {
-      iteminfo = '\n\t"' + key + '": ""';
-    } else {
-
-      if (!incrementNumRentals) {
-        if (key == 'numberOfRentals') {
-          iteminfo = '\n\t"' + key + '": "' + '0' + '"';  
-        } else {
-          iteminfo = '\n\t"' + key + '": "' + itemDict[key] + '"';
-        }
+      var value = itemDict[key].toString().replace(/[\n\r]/g, ''); //removes any newline characters from dictonary value
+      if (key == 'numberOfRentals') {
+        var incrementedNum = parseInt(value, 10) + 1; //takes current numberOfRentals string, converts to int, and increments by 1
+        incrementedNum = incrementedNum.toString(10); //convert int back to string
+        iteminfo = '\n\t"' + key + '": "' + incrementedNum + '"';  
+        console.log("Number of Rentals: " + incrementedNum);
+      } else if (key == 'lastCustomerRented') {
+        iteminfo = '\n\t"' + key + '": "' + customerId + '"';
+        console.log("Last Customer Rented: " + customerId);
+      } else if (key == 'lastDateRented') {
+        iteminfo = '\n\t"' + key + '": "' + lastDateRented + '"';
+        console.log("Last Date Rented: " + lastDateRented);
       } else {
-        if (key == 'numberOfRentals') {
-          var incrementedNum = parseInt(itemDict[key], 10) + 1;
-          incrementedNum = incrementedNum.toString(10);
-          iteminfo = '\n\t"' + key + '": "' + incrementedNum + '"';  
-        } else {
-          iteminfo = '\n\t"' + key + '": "' + itemDict[key] + '"';
-        }
+        iteminfo = '\n\t"' + key + '": "' + value + '"';
       }
 
-    }
-
     if (numKeys != 1) {
-      iteminfo += ',';
+      iteminfo += ','; //add a comma after every line except last one
     }
 
     output += iteminfo;
-
     numKeys-=1;
   })  
 
   output += '}';
-  //console.log(output);
+ // console.log(output);
   return output;
-
 }
-
-
-
-
-

@@ -1,0 +1,10 @@
+curl -X POST https://api.instagram.com/oauth/access_token \
+> -F app_id=1365806280266573 \
+> -F app_secret=a68467b2ab09e2f06cdae4970abc527d \
+> -F grant_type=authorization_code \
+> -F redirect_uri=https://github.com/laisakhan97 \
+> -F code=AQAkkx18PITJjaIl0GRHRt88ur9wvEAHtG-wber5YZ7Cmkx30ax8M2XD_7rzCcJLYWt-4xZ0dEP9iW2IaoUcYmZ3wdb4-HmocX23n7Df-qCoxvJUsFdrKLUdtTzAqSy2IDuPhlcfFkQ5ojprm5CIT9QcS6uSn5cDO5PIctXjDNT1aDf6ltUUQ1H7xBvT22MlDnCEbxa7UwSLnoOgVOeyBaCruc_d-lJyZzvBzMUFVTxrRQ
+{"access_token": "IGQVJWWkZADTFhvNG8zNGFFYVc1QVNuel80MXRhQ283NXgxaWVsYkpBMURoYUpTRnNoVlM1NUtLM0J6ajlwaW9hVVdvQS04bGdfX1RjYTBsdVNOa0RqOHg5UmRLYjdQcERfS2hmaUFGWFcwVjNnRF9KUXQ4bTdYWWJGN2ZAz", "user_id": 17841401039262736}
+
+curl -X GET 'https://graph.instagram.com/17elds=id,username&access_token=IGQVJWWkZADTFhvNG8zNGFFYVc1QVNuel80MXRhQ283NXgxaWVsYkpBMURoYUpTRnNoVlM1NUtLM0J6ajlwaW9hVVdvQS04bGdfX1RjYTBsdVNOa0RqOHg5UmRLYjdQcERfS2hmaUFGWFcwVjNnRF9KUXQ4bTdYWWJGN2ZAz'
+{"id":"17841401039262736","username":"la.i.sa"}
