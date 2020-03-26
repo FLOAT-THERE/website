@@ -1,14 +1,21 @@
+@font-face {
+    font-family: "Brandon Grosteque";
+    src: 
+    url("./fonts/brandon-grotesque-light-58a8a4b38001d.otf")format("opentype"),
+    url("./fonts/brandon-grotesque-light-italic-58a8a4ccb88be.otf")format("opentype"),
+    url("./fonts/brandon-grotesque-regular-italic-58a8a456c4724.otf")format("opentype");
+}
 html {
     scroll-behavior: smooth; /* for that smooth scrolling effect when you jump to another page */
   }
 nav {
     background: transparent;
-    font-weight: 400;
+ /*   font-weight: normal; */
     font-size: 90%;
 }
 body {
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 300;
+    font-family: 'Brandon Grosteque', sans-serif;
+  /*  font-weight: lighter; */
     text-align: center;
     margin: none;
     padding: none; 
@@ -16,13 +23,13 @@ body {
 
 h1 {
     font-size: 300%;
-    font-weight: 300;
+  /*  font-weight: lighter; */
 
 }
 h2 {
     color: #66abb0;
     font-size: 225%;
-    font-weight: 300;
+  /*  font-weight: 300; */
 }
 
 h5 {  font-size: 150%; }
@@ -131,21 +138,21 @@ p {
 .btn-outline-primary:active {
     background-color:#66abb0;
     color: white;
-    border: 0px;
+    border: 1px solid #66abb0;
 
 }
 
 .btn-outline-primary:hover {
     background-color:#66abb0;
     color: white;
-    border: 0px;
+    border: 1px solid #66abb0;
 
 }
 
 .btn-outline-primary:focus {
     background-color:#66abb0;
     color: white;
-    border: 0px;
+    border: 1px solid #66abb0;
 
 }
 
@@ -158,20 +165,20 @@ p {
 .btn2:active {
     background-color:#66abb0;
     color: white;
-    border: 0px;
+    border: 1px solid #66abb0;
 
 }
 
 .btn2:hover {
     background-color:#66abb0;
     color: white;
-    border: 0px;
+    border: 1px solid #66abb0;
 
 }
 
 .btn2:focus {
     background-color:#66abb0;
     color: white;
-    border: 0px;
+    border: 1px solid #66abb0;
 
 }

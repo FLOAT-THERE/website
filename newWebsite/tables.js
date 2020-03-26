@@ -2,8 +2,8 @@
 const Joi = require('joi');
 var dynamo = require('dynamodb');
 dynamo.AWS.config.update({
-    "accessKeyId": "YOUR ACCESS KEY", 
-    "secretAccessKey": "YOUR SECRET KEY", 
+    "accessKeyId": "AKIATD43RUJA2YRP43WV", 
+    "secretAccessKey": "dZh1omcQKr6pPAMi7g0H0lxXcgMAobr+M/O2iFbf", 
     "region": "us-east-1" 
       });
 

@@ -20,9 +20,9 @@ var subscribemodal = function(req, res) {
                 }
             });
             res.render('index.ejs', {messagemodal:
-                 'Thanks for joining our mailing list! You may now close this window.'});
+                 'Thanks for joining our mailing list! You may now close this window.', messagefooter:null});
         } else {
-            res.render('index.ejs', {messagemodal: 'You\'ve already subscribed to our mailing list with this email.'});
+            res.render('index.ejs', {messagemodal: 'You\'ve already subscribed to our mailing list with this email.', messagefooter:null});
         }
     });	
 };
@@ -51,8 +51,7 @@ var subscribefooter = function(req, res) {
 var routes = {
     main_page: mainpage,
     subscribe_modal: subscribemodal,
-    subscribe_footer: subscribefooter
-    
+    subscribe_footer: subscribefooter  
 };
 
 module.exports = routes;
