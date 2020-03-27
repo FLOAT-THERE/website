@@ -5,6 +5,7 @@
     url("./fonts/brandon-grotesque-light-italic-58a8a4ccb88be.otf")format("opentype"),
     url("./fonts/brandon-grotesque-regular-italic-58a8a456c4724.otf")format("opentype");
 }
+
 html {
     scroll-behavior: smooth; /* for that smooth scrolling effect when you jump to another page */
   }

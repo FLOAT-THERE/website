@@ -11,8 +11,17 @@ var subscribemodal = function(req, res) {
     // form validation stuff here
     tables.subscribelist.get(email, function (err, post) {   
         if (post == null) {
-            tables.subscribelist.create({email: req.body.email, name: req.body.name, date: req.body.date,
-                    hearAbout: req.body.source},  function (err, acc) {
+            var name = req.body.name;
+            var date = req.body.date;
+            var hearAbout = req.body.source;
+            if (date == "") {;
+                date = "0/0/0"
+            }
+            if (hearAbout == "") {
+                hearAbout = "N/A";
+            }
+            tables.subscribelist.create({email: email, name: name, date: date,
+                    hearAbout: hearAbout, location: "modal"},  function (err, acc) {
                 if( err ) {
                     console.log('error in saving account', err);
                 } else {
@@ -32,8 +41,17 @@ var subscribefooter = function(req, res) {
     // form validation stuff here
     tables.subscribelist.get(email, function (err, post) {   
         if (post == null) {
-            tables.subscribelist.create({email: req.body.email, name: req.body.name, date: req.body.date,
-                    hearAbout: req.body.source},  function (err, acc) {
+            var name = req.body.name;
+            var date = req.body.date;
+            var hearAbout = req.body.source;
+            if (date == "") {
+                date = "0/0/0"
+            }
+            if (hearAbout == "") {
+                hearAbout = "N/A"
+            }
+            tables.subscribelist.create({email: email, name: name, date: date,
+                    hearAbout: hearAbout, location: "footer"},  function (err, acc) {
                 if( err ) {
                     console.log('error in saving account', err);
                 } else {

@@ -2,8 +2,8 @@
 const Joi = require('joi');
 var dynamo = require('dynamodb');
 dynamo.AWS.config.update({
-    "accessKeyId": "YOUR ACCESS KEY", 
-    "secretAccessKey": "YOUR SECRET KEY", 
+    "accessKeyId": "", 
+    "secretAccessKey": "", 
     "region": "us-east-1" 
       });
 
@@ -18,6 +18,7 @@ var SubscribeList = dynamo.define('SubscribeList', {
         name    : Joi.string(),
         date     : Joi.string(),
         hearAbout   : Joi.string(),
+        location : Joi.string(),
     }
     });
 
@@ -31,7 +32,7 @@ dynamo.createTables(function(err) {
       console.log('Tables has been created');
     }
   });
-  */
+*/
   
 // we export hi so that other files (aka routes.js) can access the variable routes, where
 // you can then access other variables in this file.
