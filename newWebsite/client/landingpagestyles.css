@@ -9,6 +9,17 @@
 html {
     scroll-behavior: smooth; /* for that smooth scrolling effect when you jump to another page */
   }
+
+#note {
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #E3F2F3;
+    text-align: center;
+    padding: 1px;
+    margin: 0px;
+}
+
 nav {
     background: transparent;
  /*   font-weight: normal; */
@@ -38,13 +49,13 @@ h5 {  font-size: 150%; }
 p { 
     font-size: 90%;
     margin: 5px;
+    padding: 10%;
 }
  
-
 .jumbotronheader{
     color: #E3F2F3;
     background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)) ,
-    url("Customer\ photo_Emily.jpeg");
+    url("./images/Customer\ photo_Emily.jpeg");
     background-repeat: no-repeat;
     background-size: cover;
     padding-top: 20%;
@@ -133,53 +144,57 @@ p {
     color: #f2fcfc;
     border: 1px solid #f2fcfc;
     border-radius: 0 !important; /* for non-rounded edges */
-
 }
 
 .btn-outline-primary:active {
     background-color:#66abb0;
     color: white;
     border: 1px solid #66abb0;
-
 }
 
 .btn-outline-primary:hover {
     background-color:#66abb0;
     color: white;
     border: 1px solid #66abb0;
-
 }
 
 .btn-outline-primary:focus {
     background-color:#66abb0;
     color: white;
     border: 1px solid #66abb0;
+}
 
+.btn-outline-primary:visited {
+    background-color:#66abb0;
+    color: white;
+    border: 1px solid #66abb0;
 }
 
 .btn2 {
     color: black;
     border: 1px solid black;
     border-radius: 0 !important; /* for non-rounded edges */
-
 }
 .btn2:active {
     background-color:#66abb0;
     color: white;
     border: 1px solid #66abb0;
-
 }
 
 .btn2:hover {
     background-color:#66abb0;
     color: white;
     border: 1px solid #66abb0;
-
 }
 
 .btn2:focus {
     background-color:#66abb0;
     color: white;
     border: 1px solid #66abb0;
+}
 
+.btn2:visited {
+    background-color:#66abb0;
+    color: white;
+    border: 1px solid #66abb0;
 }

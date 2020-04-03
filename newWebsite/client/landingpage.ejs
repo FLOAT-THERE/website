@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="indexstyles.css">
-    <link rel="icon" href="FLOAT_THERE.png" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="landingpagestyles.css">
+    <link rel="icon" href="./images/FLOAT_THERE.png" type="image/x-icon"/>
 
     <!-- for calendar date picker -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -36,8 +36,11 @@
 </head>
 
 <body>
-
+    
     <header>
+        <div id="note">
+            PICK UP TO 5 ITEMS FOR $64
+        </div>
         <div class ="jumbotron jumbotron-fluid jumbotronheader text-center text-white pt-1">
             <nav class="navbar navbar-expand-lg navbar-dark navbar-transparent">
                 <a class="navbar-brand" href="#" style="font-weight: 300; font-size: 150%">FLOAT/THERE</a>
@@ -48,7 +51,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Get Started<span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="quiz.html">Get Started<span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#HowItWorks">How It Works</a>
@@ -75,7 +78,9 @@
             <h1 class="pt-5" style="color: #E3F2F3">Welcome to your travel closet.</h1>
             <h4 class="pt-5">Travel light, adventure awaits.</h4>
             <p class="pt-5"><u>Going on vacation? Pack your essentials and leave the rest to us.</u></p>
-            <button class="btn btn-outline-primary mt-5" type="submit">Get Started</button>
+            <a href="quiz.html">
+                <button class="btn btn-outline-primary mt-5" type="submit">Get Started</button>
+            </a>
         </div>
     </header>
     
@@ -130,17 +135,17 @@
         <div class="container-fluid containerDestination">
             <div class="row">
                 <div class="col-sm-12 col-md-4">
-                    <img style="width: 100%; height: 90%" src="new-york-edited.jpg" alt="">
+                    <img style="width: 100%; height: 90%" src="./images/new-york-edited.jpg" alt="">
                     <p>New York</p>
                     <button class="btn btn-outline-primary px-5" type="button">Explore</button>
                 </div>  
                 <div class="col-sm-12 col-md-4">
-                    <img style="width: 100%; height: 90%" src="miami-edited.jpg" alt="">
+                    <img style="width: 100%; height: 90%" src="./images/miami-edited.jpg" alt="">
                     <p>Miami</p>
                     <button class="btn btn-outline-primary px-5" type="button">Explore</button>
                 </div>
                 <div class="col-sm-12 col-md-4">
-                    <img style="width: 100%; height: 90%" src="los-angeles-edited.jpg" alt="">  
+                    <img style="width: 100%; height: 90%" src="./images/los-angeles-edited.jpg" alt="">  
                     <p>Los Angeles</p>
                     <button class="btn btn-outline-primary px-5" type="button">Explore</button>
                 </div> 
@@ -154,7 +159,7 @@
                 <div class="col-sm-12 col-md-7">
                     <h2 class="py-4">About FLOAT/THERE</h2>
                     <h5>We're changing the art of packing.</h5>
-                    <p class="pt-3">Ever been excited about a vacation but dreaded planning outfits
+                    <p class="pb-0">Ever been excited about a vacation but dreaded planning outfits
                         and packing for it? Us too. We found ourselves wanting (or needing) 
                         new clothes and spending money shopping for trips, only to wear those items 
                         once or twice and then never again. Sometimes we would run out of room in 
@@ -166,10 +171,10 @@
                         to your destination, we allow you to travel light and spend more time 
                         planning what you're going to see than what you're going to wear.
                     </p>
-                    <button class="btn btn2 btn-outline-primary px-5 my-3" type="submit">Sign Up</button>
+                    <button class="btn btn2 btn-outline-primary px-5 mt-3 mb-5" type="submit">Sign Up</button>
                 </div>
                 <div class="col-sm-12 col-md-5 align-self-center">
-                    <img style="width: 100%; height: 90%" src="travel.jpg" alt="">
+                    <img style="width: 100%; height: 90%" src="./images/travel.jpg" alt="">
                 </div>
             </div>
         </div>
@@ -186,7 +191,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12 col-md-6 align-self-center">
-                            <img src="Customer photo_Erika.png" class="d-block w-100" alt="">
+                            <img src="./images/Customer photo_Erika.png" class="d-block w-100" alt="">
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <h2 class="py-4">What Our Customers Say</h2>
@@ -207,7 +212,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12 col-md-6 align-self-center">
-                            <img src="Customer photo_Mary Kate.png" class="d-block w-100" alt="">
+                            <img src="./images/Customer photo_Mary Kate.png" class="d-block w-100" alt="">
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <h2 class="py-4">What Our Customers Say</h2>
@@ -242,21 +247,21 @@
                 </div>
                 <div class="col-sm-12 col-md-4 align-self-center">
                     <a href="https://www.thedwightd.com/partners">
-                        <img style="width: 70%; height: 70%" src="diwghtd-logo.webp" alt="Dwight D">
+                        <img style="width: 70%; height: 70%" src="./images/diwghtd-logo.webp" alt="Dwight D">
                     </a>
                 </div>
                 <div class="col-sm-12 col-md-4 align-self-center">
                     <a href="https://blog.thirdlove.com/womenmade-float-there-founders-angela-jiang-and-linda-ye/">
-                        <img style="width: 70%; height: 70%" src="thirdlove_logo.jpg" alt="Third Love">
+                        <img style="width: 70%; height: 70%" src="./images/thirdlove_logo.jpg" alt="Third Love">
                     </a>
                 </div>
             </div>
         </div>
     </section>
     <section id=JoinForm>
-        <div class ="jumbotron text-center" style="background-color: white; padding-bottom: 1%">
+        <div class ="jumbotron text-center" style="background-color: white; padding-bottom: 0px">
             <h3>Now accepting limited orders.</h3>
-            <p>Join now to learn more about how we're changing the art of packing and get 10%
+            <p class="py-0">Join now to learn more about how we're changing the art of packing and get 10%
                  off your first order.
             </p>
             <form method="POST" action="/subscribe-footer">
@@ -290,7 +295,7 @@
                         <input type="text" class="form-control" placeholder="ex: Instagram" name="source"/>
                     </div>
                 </div>
-                <button type="submit" onClick="document.getElementById('JoinForm').scrollIntoView();" class="btn btn2 btn-outline-primary mt-3">Submit</button>
+                <button type="submit" onClick="document.getElementById('JoinForm').scrollIntoView();" class="btn btn2 btn-outline-primary mt-3 mb-0">Submit</button>
                 <p><%=messagefooter%></p>
               </form>
               <script>
@@ -352,19 +357,19 @@
 
     <footer>
         <div class ="jumbotron text-center" style="background-color: white; padding:0px; margin:0px">
-            <p>Follow us: 
+            <p class="py-0">Follow us: 
             <a href="https://www.instagram.com/floatthere/">
-                <img style="width: 3%; height: 3%" src="instagram.png" alt="Instagram">
+                <img style="width: 3%; height: 3%" src="./images/instagram.png" alt="Instagram">
             </a>
             <a href="https://www.facebook.com/floatthere/">
-                <img style="width: 3%; height: 3%" src="facebook.png" alt="Facebook">
+                <img style="width: 3%; height: 3%" src="./images/facebook.png" alt="Facebook">
             </a>
             <a href="https://twitter.com/floatthere">
-                <img style="width: 3%; height: 3%" src="twitter.png" alt="Twitter">
+                <img style="width: 3%; height: 3%" src="./images/twitter.png" alt="Twitter">
             </a>
         </p>
-            <p>Questions? Contact Us: <a href="mailto:info@floatthere.com">info@floatthere.com</a></p>
-            <p>&copy2020 by FLOAT/THERE</p>
+            <p class="py-0">Questions? Contact Us: <a href="mailto:info@floatthere.com">info@floatthere.com</a></p>
+            <p class="py-0"> &copy2020 by FLOAT/THERE</p>
         </div>
     </footer>
         <!-- Optional JavaScript -->

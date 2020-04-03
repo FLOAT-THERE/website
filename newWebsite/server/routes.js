@@ -1,9 +1,9 @@
-var tables = require('./tables.js');  // double check whether path works
+var tables = require('./tables.js'); 
 var async = require('async'); 
 
 
 var mainpage = function (req, res) {
-    res.render('index.ejs', {messagemodal: null, messagefooter: null});
+    res.render('../client/landingpage.ejs', {messagemodal: null, messagefooter: null});
 }
 
 var subscribemodal = function(req, res) {
@@ -28,10 +28,10 @@ var subscribemodal = function(req, res) {
                     console.log('created account in DynamoDB', acc.get('email'));
                 }
             });
-            res.render('index.ejs', {messagemodal:
+            res.render('../client/landingpage.ejs', {messagemodal:
                  'Thanks for joining our mailing list! You may now close this window.', messagefooter:null});
         } else {
-            res.render('index.ejs', {messagemodal: 'You\'ve already subscribed to our mailing list with this email.', messagefooter:null});
+            res.render('../client/landingpage.ejs', {messagemodal: 'You\'ve already subscribed to our mailing list with this email.', messagefooter:null});
         }
     });	
 };
@@ -58,18 +58,22 @@ var subscribefooter = function(req, res) {
                     console.log('created account in DynamoDB', acc.get('email'));
                 }
             });
-            res.render('index.ejs', {messagemodal: null, messagefooter:
+            res.render('../client/andingpage.ejs', {messagemodal: null, messagefooter:
                  'Thanks for joining our mailing list!'});
         } else {
-            res.render('index.ejs', {messagemodal: null, messagefooter: 'You\'ve already subscribed to our mailing list with this email.'});
+            res.render('../client/landingpage.ejs', {messagemodal: null, messagefooter: 'You\'ve already subscribed to our mailing list with this email.'});
         }
     });	
 };
 
+// var quiz = function (req, res) {
+//     res.render('quiz.ejs', {});
+// }
 var routes = {
     main_page: mainpage,
     subscribe_modal: subscribemodal,
-    subscribe_footer: subscribefooter  
+    subscribe_footer: subscribefooter,
+  //  get_quiz: quiz
 };
 
 module.exports = routes;
