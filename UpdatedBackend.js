@@ -119,9 +119,6 @@ class Product {
 
 }
 
-function getList() {
-    return myList;
-}
 
 function getProducts() {
         var URL = “https://b9bdb0efc4f677ef3e699ea413280eb3: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@float-there.myshopify.com/admin/api/2020-04/products.json?fields=id,images,variants”;                    
