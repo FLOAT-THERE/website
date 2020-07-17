@@ -1,4 +1,4 @@
-myProductList = new List;
+
 class Node {
         constructor(element) {
                 this.element = element;
@@ -134,12 +134,14 @@ function getProducts() {
                                         if (request.status == 200) {
                                         var products = JSON.parse(request.response);
                                         var length = products.keys(data.shareInfo[I]).length;
+                                        List myProductList = new List;
                                 for (int x = 0; x < length; x++) {
                                     var element = new Element(products[x].id, products[x].variants, products[x].images);
                                     var node = new Node(element);
-                                    myProductListlist.add(node);
+                                    myProductList.add(node);
 
                                 }
+                                  return myProductList;
                              }
                            }
                         } else {
