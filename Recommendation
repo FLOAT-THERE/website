@@ -43,9 +43,6 @@ let compArray = [   //Array that the products are being compared to
 	['NYC', 0],
 	['Sophisticated', 0],
 	['Urban', 0],
-	['Dresses', 0],
-	['Leggings', 0],
-	['Tops', 0],
 	['Weekend', 0]
  ];
 
@@ -54,7 +51,7 @@ let compArray = [   //Array that the products are being compared to
 let metadata = getMetadata(uid);
 for(var x = 0; x < metadata.length; x++) {
  compArray[0][1] ++;
-	for (var y = 1; y < 20; y++) {
+	for (var y = 1; y < 17; y++) {
     for (i in metadata[x].tags) {
 		if (i == compArray[y][0]) {
         	compArray[y][1] ++;
@@ -62,7 +59,7 @@ for(var x = 0; x < metadata.length; x++) {
 	}
 }
  // END of section of code that will not work
-	for (var z = 1; z < 20; z++) {	
+	for (var z = 1; z < 17; z++) {	
 		compArray[1][z] = compArray[1][z] / compArray[1][0];
 	}
     
@@ -92,7 +89,7 @@ for(var x = 0; x < metadata.length; x++) {
  
 	for (var a = 0; a < products.length; a++) {
     	recArray[a][0] = products[a].id;
-		for (var b = 0; b < 21; b++) {
+		for (var b = 0; b < 18; b++) {
 			//var currentTag = currentTagOfString;
             for (i in products[a].tags) {
            	 if (i == compArray[b][0]) {
