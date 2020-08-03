@@ -1,0 +1,130 @@
+//THIS FUNCTION WILL NOT WORK. it is a blueprint for once the metadata is created. Likes/dislikes, etc.
+function getMetadata(uid) {
+let metadata = [];
+	customerURL = 'https://b9bdb0efc4f677ef3e699ea413280eb3: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@float-there.myshopify.com/admin/customers/';
+    URL = customerURL + uid + '/metafields.json';
+     try {
+                let request = new XMLHttpRequest();
+                request.open('GET', URL);
+                request.send();
+                request.onload = () => {console.log(request);
+                                        if (request.status == 200) {     
+                                            metadata = JSON.parse(request.response);
+                                            return metadata;
+                                        }
+                                        }
+    	} catch(err) {
+        	console.log("error");
+      }
+                                      
+ }
+
+
+//RECOMMENDATION FUNCTION
+function recommend(uid) {
+let products = [];  // Array holding products for possible recommending.
+let recArray = [];  // Array holding products ready to be sorted for recommendation
+let compArray = [   //Array that the products are being compared to
+  //Item compArray[0][1] keeps a tally of the number of items being added 
+	['Tag:', 0],
+  ['Active', 0], 
+	['Adventure', 0],
+	['Bachelorette', 0], 
+	['Beach', 0],
+	['Bold', 0],
+	['Casual', 0],
+	['Classic', 0],
+	['Cozy', 0],
+	['Dressy', 0],
+	['Elegant', 0],
+	['Flirty', 0],
+ 	['LA', 0],
+	['Miami', 0], 
+	['NYC', 0],
+	['Sophisticated', 0],
+	['Urban', 0],
+	['Dresses', 0],
+	['Leggings', 0],
+	['Tops', 0],
+	['Weekend', 0]
+ ];
+
+
+//Pulls from metadata. THIS SECTION OF CODE WILL NOT WORK. It is a blueprint for AFTER LIkes/dislikes is implemented
+let metadata = getMetadata(uid);
+for(var x = 0; x < metadata.length; x++) {
+ compArray[0][1] ++;
+	for (var y = 1; y < 20; y++) {
+    for (i in metadata[x].tags) {
+		if (i == compArray[y][0]) {
+        	compArray[y][1] ++;
+		}
+	}
+}
+ // END of section of code that will not work
+	for (var z = 1; z < 20; z++) {	
+		compArray[1][z] = compArray[1][z] / compArray[1][0];
+	}
+    
+    
+  
+//PULLING PRODUCTS INTO AN ARRAY
+//if it is easier, you can replace this with the bit you've written to pull the products
+	URL = 'https://b9bdb0efc4f677ef3e699ea413280eb3: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@float-there.myshopify.com/admin/api/2020-04/products.json?limit=250';
+   // URL = customerURL + uid + '/metafields.json';
+    try {
+                let request = new XMLHttpRequest();
+                request.open('GET', URL);
+                request.send();
+                 
+                request.onload = () => {//document.write(request);
+     									
+                						document.write(request.status);
+                                        if (request.status == 200) {     
+                                        products = JSON.parse(request.response);
+                                        } else {
+                                       	document.write('testing');
+                                     }
+                                     }
+          } catch(err) {
+        	document.write("Error");
+        }
+ 
+	for (var a = 0; a < products.length; a++) {
+    	recArray[a][0] = products[a].id;
+		for (var b = 0; b < 21; b++) {
+			//var currentTag = currentTagOfString;
+            for (i in products[a].tags) {
+           	 if (i == compArray[b][0]) {
+				recArray[a][1] = recArray[a][1] + compArray[b][1];
+             	}
+             }
+			}
+		}
+	}
+ 
+}
+
+
+const merge = (arr1, arr2) => {
+  let sorted = [];
+
+  while (arr1.length && arr2.length) {
+    if (arr1[0][1] < arr2[0][1]) sorted.push(arr1.shift());
+    else sorted.push(arr2.shift());
+  };
+
+  return sorted.concat(arr1.slice().concat(arr2.slice()));
+};
+
+//Call mergesort to sort array once it is created.
+const mergeSort = arr => {
+  if (arr.length <= 1) return arr;
+  let mid = Math.floor(arr.length / 2),
+      left = mergeSort(arr.slice(0, mid)),
+      right = mergeSort(arr.slice(mid));
+
+  return merge(left, right);
+};
+
+
