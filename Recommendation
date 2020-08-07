@@ -1,8 +1,139 @@
-//THIS FUNCTION WILL NOT WORK. it is a blueprint for once the metadata is created. Likes/dislikes, etc.
-function getMetadata(uid) {
+//Posting Dislikes
+function postDisikes(dislikes, uid) {
+    customerURL = 'https://b9bdb0efc4f677ef3e699ea413280eb3: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@float-there.myshopify.com/admin/customers/';
+    URL = customerURL + uid + '/metafields.json';
+    print(URL);
+    var idString = "";
+    for (i in dislikes[i]) {
+    	idString += i;
+	idString += " ,";
+    }
+    var data = JSON.stringify({
+            "namespace" : "window_shop",
+            "key" : "dislike",
+            "value" : "{\"Id\": \"" + idString,
+            "value_type" : "json_string"
+        });
+        try {
+	    let xhr = new XMLHttpRequest(); 
+	    xhr.open("POST", url, true); 
+	    xhr.setRequestHeader("Content-Type", "application/json");
+	    //If there are no errors
+	     xhr.onreadystatechange = function () { 
+	    if (xhr.readyState === 4 && xhr.status === 200) { 
+  
+                    // Print received data from server 
+                    result.innerHTML = this.responseText; 
+  
+                } 
+            };
+	    xhr.send(data); 
+	} catch(err) {
+	console.log('Error');
+	}
+        
+}
+//Posting Likes
+function postLikes(likes, uid) {
+    customerURL = 'https://b9bdb0efc4f677ef3e699ea413280eb3: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@float-there.myshopify.com/admin/customers/';
+    URL = customerURL + uid + '/metafields.json';
+    print(URL);
+    var idString = "";
+    for (i in likes[i]) {
+    	idString += i;
+	idString += " ,";
+    }
+    var data = JSON.stringify({
+            "namespace" : "window_shop",
+            "key" : "like",
+            "value" : "{\"Id\": \"" + idString,
+            "value_type" : "json_string"
+        });
+        try {
+	    let xhr = new XMLHttpRequest(); 
+	    xhr.open("POST", url, true); 
+	    xhr.setRequestHeader("Content-Type", "application/json");
+	    //If there are no errors
+	     xhr.onreadystatechange = function () { 
+	    if (xhr.readyState === 4 && xhr.status === 200) { 
+  
+                    // Print received data from server 
+                    result.innerHTML = this.responseText; 
+  
+                } 
+            };
+	    xhr.send(data); 
+	} catch(err) {
+	console.log('Error');
+	}
+        
+}
+
+//Posting closet
+function postCloset(closet, uid){
+    customerURL = 'https://b9bdb0efc4f677ef3e699ea413280eb3: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@float-there.myshopify.com/admin/customers/';
+    URL = customerURL + uid + '/metafields.json';
+    print(URL);
+    var data = JSON.stringify({
+            "namespace" : "closet",
+            "key" : "item" + str(i+1),
+            "value" : "{\"handle\": \"" + closet[i][0] + "\"  , \"variant\": \"" + str(closet[i][1]) + "\"}",
+            "value_type" : "json_string"
+        });
+        try {
+	    let xhr = new XMLHttpRequest(); 
+	    xhr.open("POST", url, true); 
+	    xhr.setRequestHeader("Content-Type", "application/json");
+	    //If there are no errors
+	     xhr.onreadystatechange = function () { 
+	    if (xhr.readyState === 4 && xhr.status === 200) { 
+  
+                    // Print received data from server 
+                    result.innerHTML = this.responseText; 
+  
+                } 
+            };
+	    xhr.send(data); 
+	} catch(err) {
+	console.log('Error');
+	}
+        
+}
+//Get A product's information by its ID
+function getProductById(id) {
+   URL = 'https://b9bdb0efc4f677ef3e699ea413280eb3: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@float-there.myshopify.com/admin/api/2020-04/products/';
+   URL = URL + id + '.json';
+    try {
+                let request = new XMLHttpRequest();
+                request.open('GET', URL);
+                request.send();
+                 
+                request.onload = () => {//document.write(request);
+     									
+                						document.write(request.status);
+                                        if (request.status == 200) {     
+                                        products = JSON.parse(request.response);
+                                        } else {
+                                       	document.write('testing');
+                                     }
+                                     }
+          } catch(err) {
+        	document.write("Error");
+        }
+
+}
+
+//Retrieve metadata
+function getMetadata(uid, field) {
 let metadata = [];
 	customerURL = 'https://b9bdb0efc4f677ef3e699ea413280eb3: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@float-there.myshopify.com/admin/customers/';
     URL = customerURL + uid + '/metafields.json';
+    if (field == 'likes') {
+	var urlEnd = 'key';
+	} else if (field == 'closet') {
+		var urlEnd = 'namespace';
+	}
+	URL = URL + '?field=' + urlEnd + ',value';
      try {
                 let request = new XMLHttpRequest();
                 request.open('GET', URL);
@@ -46,17 +177,37 @@ let compArray = [   //Array that the products are being compared to
 	['Weekend', 0]
  ];
 
-
-//Pulls from metadata. THIS SECTION OF CODE WILL NOT WORK. It is a blueprint for AFTER LIkes/dislikes is implemented
-let metadata = getMetadata(uid);
-for(var x = 0; x < metadata.length; x++) {
+//Retrieves likes and counts how many times every tag occurs in the likes
+let metadata = getMetadata(uid, 'likes');
+//for(var x = 0; x < metadata.length; x++) {
+if (metadata[x].key == 'likes') {
  compArray[0][1] ++;
-	for (var y = 1; y < 17; y++) {
-    for (i in metadata[x].tags) {
+ let likedProducts = metadata.values;
+    for (i in likedProducts[x]) {
+    	var myProduct = getProductById(i);
+	for (j in myProduct.tags[x]) {
+    	for (var y = 1; y < 17; y++) {
 		if (i == compArray[y][0]) {
         	compArray[y][1] ++;
 		}
 	}
+	}
+  }
+  }
+//}
+//Retrieves closeg and counts how many times every tag occurs in the closet
+let otherMetaData = getMetadata(uid, 'closet');
+for(var x = 0; x < otherMetaData.length; x++) {
+if (otherMetaData[x].namespace == 'closet') {
+ compArray[0][1] ++;
+ var item = getProductById(otherMetaData[x].value);
+   for (i in item[x].tags) {
+ 	 for (var y = 1; y < 17; y++) {
+		if (i == compArray[y][0]) {
+        	compArray[y][1] ++;
+		}
+	}
+  }
 }
  // END of section of code that will not work
 	for (var z = 1; z < 17; z++) {	
