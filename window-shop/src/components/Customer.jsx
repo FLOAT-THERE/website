@@ -15,9 +15,7 @@ class Customer extends Component {
 
     render() {
         return (
-            <div>
-                <h1> {this.props.customerId}</h1>
-            </div>
+            <></>
         )
 
     }
